@@ -1,5 +1,6 @@
 #include "fractions.h"
-#include <iostream>;
+#include <iostream>
+#include <algorithm>
 
 int32_t Fraction::getNumerator() const {
     return numerator;
@@ -17,6 +18,14 @@ void Fraction::setDenominator(int32_t denominator) {
     this->denominator = denominator;
 }
 
+int gcd(int numerator, int denominator) {
+    while (denominator != 0){
+        int temp = numerator%denominator;
+        numerator = denominator;
+        denominator = temp;
+    } return numerator;
+}
+
 void Fraction::output() {
     if (numerator == 0 && denominator == 0) {
         std::cout << "NAN";
@@ -27,11 +36,8 @@ void Fraction::output() {
     } else if (numerator % denominator == 0) {
         std::cout << numerator / denominator;
     } else if (numerator % denominator != 0) {
-        if (numerator > denominator) {
-            std::cout << numerator / (numerator - denominator) << " / " << denominator / (numerator - denominator);
-        } else if (numerator < denominator) {
-            std::cout << numerator / (denominator - denominator) << " / " << denominator / (denominator - denominator);
-        }
-        std::cout << numerator << " / " << denominator;
+        numerator = numerator/ gcd(numerator, denominator);
+        denominator = denominator/ gcd(numerator, denominator);
+        std::cout << numerator << "/" << denominator;
     }
 }
